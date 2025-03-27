@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Fixtures and Results</title>
+    <style>
+    link a  href="https://1drv.ms/u/c/a3258337e873f3b0/EQO6vHO1SPxOpEI7XtWWYN0Bxv2Se7r2w78xr-bnqjDLjg?e=wDzRqd"
+</style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .form-container {
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            width: 50px;
+            text-align: center;
+        }
+
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Football Fixtures and Results</h1>
+
+    <div class="form-container">
+        <label for="team1">Team 1:</label>
+        <select id="team1">
+            <!-- Dynamically populated -->
+        </select>
+        <label for="team2">Team 2:</label>
+        <select id="team2">
+            <!-- Dynamically populated -->
+        </select>
+        <label for="score1">Score (Team 1):</label>
+        <input type="number" id="score1" min="0">
+        <label for="score2">Score (Team 2):</label>
+        <input type="number" id="score2" min="0">
+        <button onclick="updateResults()">Submit Result</button>
+    </div>
+
+    <h2>Fixtures</h2>
+    <table id="fixtures">
+        <thead>
+            <tr>
+                <th>Match</th>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Score</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamically populated -->
+        </tbody>
+    </table>
+
+    <h2>Results Table</h2>
+    <table id="results">
+        <thead>
+            <tr>
+                <th>Position</th>
+                <th>Team</th>
+                <th>Played</th>
+                <th>Won</th>
+                <th>Drawn</th>
+                <th>Lost</th>
+                <th>Goals For</th>
+                <th>Goals Against</th>
+                <th>Goal Difference</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Dynamically populated -->
+        </tbody>
+    </table>
+
+    <script>
+        // List of teams
+        const teams = ['OSCAR', 'NYOIKE', 'ROTICH', 'WANYOIKE', 'YOBBY', 'VINCIE', 'BONNIE', 'DEVENERR', 'SILENT ETHICS', 'JACE', 'RAZEL', 'DRIP'];
+
+        // Create fixture table
+        const fixtures = [];
+        for (let i = 0; i < teams.length; i++) {
+            for (let j = i + 1; j < teams.length; j++) {
+                fixtures.push([teams[i], teams[j]]);
+            }
+        }
+
+        // Initialize the result table
+        const results = {};
+        teams.forEach(team => {
+            results[team] = {
+                played: 0,
+                won: 0,
+                drawn: 0,
+                lost: 0,
+                gf: 0,
+                ga: 0,
+                gd: 0,
+                points: 0
+            };
+        });
+
+        // Populate team dropdowns for selecting teams
+        const team1Select = document.getElementById('team1');
+        const team2Select = document.getElementById('team2');
+        teams.forEach(team => {
+            const option1 = document.createElement('option');
+            option1.value = team;
+            option1.textContent = team;
+            team1Select.appendChild(option1);
+
+            const option2 = document.createElement('option');
+            option2.value = team;
+            option2.textContent = team;
+            team2Select.appendChild(option2);
+        });
+
+        // Function to populate fixture table
+        function updateFixtureTable() {
+            const fixtureTableBody = document.querySelector('#fixtures tbody');
+            fixtureTableBody.innerHTML = '';
+
+            fixtures.forEach((fixture, index) => {
+                const row = document.createElement('tr');
+                const matchCell = document.createElement('td');
+                matchCell.textContent = `Match ${index + 1}`;
+                const team1Cell = document.createElement('td');
+                team1Cell.textContent = fixture[0];
+                const team2Cell = document.createElement('td');
+                team2Cell.textContent = fixture[1];
+                const scoreCell = document.createElement('td');
+                scoreCell.id = `score-${index}`;
+                scoreCell.textContent = '0 - 0';
+                row.appendChild(matchCell);
+                row.appendChild(team1Cell);
+                row.appendChild(team2Cell);
+                row.appendChild(scoreCell);
+                fixtureTableBody.appendChild(row);
+            });
+        }
+
+        // Function to update results table
+        function updateResultsTable() {
+            const resultTableBody = document.querySelector('#results tbody');
+            resultTableBody.innerHTML = '';
+
+            // Sort teams by points and goal difference
+            const sortedTeams = Object.entries(results)
+                .sort(([, a], [, b]) => b.points - a.points || b.gd - a.gd)
+                .map(([team, stats], index) => {
+                    return {
+                        position: index + 1,
+                        team,
+                        ...stats
+                    };
+                });
+
+            // Populate the results table
+            sortedTeams.forEach((teamStats) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${teamStats.position}</td>
+                    <td>${teamStats.team}</td>
+                    <td>${teamStats.played}</td>
+                    <td>${teamStats.won}</td>
+                    <td>${teamStats.drawn}</td>
+                    <td>${teamStats.lost}</td>
+                    <td>${teamStats.gf}</td>
+                    <td>${teamStats.ga}</td>
+                    <td>${teamStats.gd}</td>
+                    <td>${teamStats.points}</td>
+                `;
+                resultTableBody.appendChild(row);
+            });
+        }
+
+        // Function to update the results based on scores entered
+        function updateResults() {
+            const team1 = document.getElementById('team1').value;
+            const team2 = document.getElementById('team2').value;
+            const score1 = parseInt(document.getElementById('score1').value, 10);
+            const score2 = parseInt(document.getElementById('score2').value, 10);
+
+            // Find the fixture index
+            const fixtureIndex = fixtures.findIndex(fixture => (fixture[0] === team1 && fixture[1] === team2) || (fixture[0] === team2 && fixture[1] === team1));
+
+            if (fixtureIndex !== -1) {
+                // Update the fixture table
+                const scoreCell = document.getElementById(`score-${fixtureIndex}`);
+                scoreCell.textContent = `${score1} - ${score2}`;
+
+                // Update the results for each team
+                const result1 = results[team1];
+                const result2 = results[team2];
+
+                result1.played += 1;
+                result2.played += 1;
+
+                result1.gf += score1;
+                result2.gf += score2;
+
+                result1.ga += score2;
+                result2.ga += score1;
+
+                result1.gd = result1.gf - result1.ga;
+                result2.gd = result2.gf - result2.ga;
+
+                if (score1 > score2) {
+                    result1.won += 1;
+                    result2.lost += 1;
+                    result1.points += 3;
+                } else if (score1 < score2) {
+                    result1.lost += 1;
+                    result2.won += 1;
+                    result2.points += 3;
+                } else {
+                    result1.drawn += 1;
+                    result2.drawn += 1;
+                    result1.points += 1;
+                    result2.points += 1;
+                }
+
+                // Update the results table
+                updateResultsTable();
+            } else {
+                alert("Invalid match or already played.");
+            }
+        }
+
+        // Initialize the tables
+        updateFixtureTable();
+        updateResultsTable();
+    </script>
+
+</body>
+</html>
