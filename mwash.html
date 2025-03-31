@@ -10,7 +10,7 @@
             margin: 0;
             padding: 0;
             height: 100vh;
-            background-image: url('C:\Users\PC\OneDrive\Pictures\wanyoo.jpg'); /* Set background image of the owner */
+            background-image: url('C:\Users\PC\OneDrive\Pictures\wanyoo.jpg'); 
             background-size: cover;
             background-position: center;
             display: flex;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            background-color: rgba(38, 33, 82, 0.8); /* Slight transparency for background */
+            background-color: rgba(38, 33, 82, 0.8);
             border-radius: 10px;
             padding: 20px;
             width: 70%;
@@ -129,16 +129,16 @@
 
             <div id="school1" class="school-images" style="display: none;">
                 <h4>primary school</h4>
-                <img src="schoolA.jpg" alt="Gathera primary">
+                <img src=""C:\Users\PC\OneDrive\Pictures\IMG_20250327_223711.jpg"" alt="Gathera primary">
             </div>
             <div id="school2" class="school-images" style="display: none;">
                 <h4>high school</h4>
-                <img src="schoolb.jpg" alt="Gathera Highschool">
+                <img src=""C:\Users\PC\OneDrive\Pictures\IMG_20250327_223844.jpg"" alt="Gathera Highschool">
             </div>
 
             <div id="school3" class="school-images" style="display: none;">
                 <h4>colleage</h4>
-                <img src="schoolc.jpg" alt="KIST college">
+                <img src="C:\Users\PC\OneDrive\Pictures\images (1).jpeg" alt="KIST college">
             </div>
         </div>
 
@@ -150,11 +150,11 @@
                     <p>Friend 1</p>
                 </div>
                 <div>
-                    <img src="friend2.jpg" alt="ZAPHAN">
+                    <img src="C:\Users\PC\OneDrive\Pictures\1000008465.jpg" alt="ZAPHAN">
                     <p>Friend 2</p>
                 </div>
                 <div>
-                    <img src="friend3.jpg" alt="JUMA">
+                    <img src="C:\Users\PC\OneDrive\Pictures\1000006602.jpg" alt="JUMA">
                     <p>Friend 3</p>
                 </div>
             </div>
@@ -194,11 +194,9 @@
         }
 
         function showSchoolImage(schoolId) {
-            // Hide all school images first
             const schoolImages = document.querySelectorAll('.school-images');
             schoolImages.forEach(img => img.style.display = 'none');
 
-            // Show the clicked school image
             const school = document.getElementById(schoolId);
             school.style.display = 'block';
         }
